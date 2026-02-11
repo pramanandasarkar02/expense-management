@@ -27,7 +27,7 @@ const Page = () => {
         <div className='h-screen overflow-hidden flex flex-col bg-gray-50'>
             {/* Header */}
             <header className='bg-linear-to-r from-blue-700 to-teal-700 text-white p-2 shrink-0'>
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center px-10'>
                     <div>
                         <h1 className='text-2xl font-bold'>Pramananda Sarkar</h1>
                     </div>
