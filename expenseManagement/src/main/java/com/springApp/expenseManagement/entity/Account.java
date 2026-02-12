@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Data
 @Table(name = "accounts")
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

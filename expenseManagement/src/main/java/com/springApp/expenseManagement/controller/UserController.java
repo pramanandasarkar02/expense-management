@@ -2,6 +2,7 @@ package com.springApp.expenseManagement.controller;
 
 import com.springApp.expenseManagement.entity.User;
 import com.springApp.expenseManagement.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
 
     @PostMapping

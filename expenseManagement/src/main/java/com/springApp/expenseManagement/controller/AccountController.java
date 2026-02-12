@@ -5,6 +5,7 @@ import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import com.springApp.expenseManagement.entity.Account;
 import com.springApp.expenseManagement.entity.AccountActivity;
 import com.springApp.expenseManagement.service.AccountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/accounts")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class AccountController {
-    private AccountService accountService;
+    private final AccountService accountService;
 
     @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody String userId){

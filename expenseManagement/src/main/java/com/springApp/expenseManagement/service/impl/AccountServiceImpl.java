@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
-    private AccountActivityRepository accountActivityRepository;
-    private AccountRepository accountRepository;
+    private final AccountActivityRepository accountActivityRepository;
+    private final AccountRepository accountRepository;
     @Override
     public List<String> getActiveMonthList(String userId) {
         return accountActivityRepository.getMonthListByUserId(userId);
@@ -38,7 +38,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createAccount(String userId) {
-        return accountRepository.createAccount(userId);
+        Account account = new Account();
+        account.setUserId(userId);
+        return accountRepository.save(account);
     }
 
     @Override
