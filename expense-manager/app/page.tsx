@@ -9,22 +9,26 @@ export default function Home() {
   const accountURL = "http://localhost:8080/api";
 
   const [name, setName] = useState("");
-  const { userId, setUserId, setAccountId } = useAuth()
+  // const { userId, setUserId, setAccountId } = useAuth()
 
   const createUser = async () => {
     const payload = { name };
     const response = await axios.post(`${accountURL}/users`, payload);
     const data = await response.data;
-    setUserId(data.id)
+    
+    // setUserId(data.id)
     console.log(response.data);
+    localStorage.setItem("userId", data.id)
   };
 
   const createAccount = async () => {
+    const userId = localStorage.getItem("userId")
     const payload = { userId }
     const response = await axios.post(`${accountURL}/accounts`, payload)
     const data = await response.data;
-    setAccountId(data.accountId)
+    // setAccountId(data.accountId)
     console.log(response.data);
+    localStorage.setItem("accountId", data.accountId)
   };
 
 

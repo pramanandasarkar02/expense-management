@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
 
-    
+
 
     @Query(
             value = "SELECT * FROM accounts WHERE user_id = ?1",
