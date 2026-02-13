@@ -13,6 +13,8 @@ enum Panels {
 }
 
 
+
+
 const Page = () => {
     const [selectedPanel, setSelectedPanel] = useState(Panels.WORKSPACE)
 
@@ -20,7 +22,9 @@ const Page = () => {
     const [accountId, setAccountId] = useState<string | null>(null)
 
     const [userName, setUserName] = useState("")
-    const [monthList, setMonthList] = useState<String[]>([])
+    const [monthList, setMonthList] = useState([])
+    const [targetedMonth, setTargetedMonth] = useState("")
+
 
     const rootURL = "http://localhost:8080/api"
 
@@ -51,10 +55,15 @@ const Page = () => {
         if (!userId) return
 
         const fetchMonths = async () => {
+            console.log("Calling fetch month")
             try {
                 const res = await axios.get(`${rootURL}/accounts/${userId}/months`)
-                setMonthList(res.data)
+                const data = await res.data;
+                setMonthList(data)
+                console.log(monthList)
+                setTargetedMonth(res.data[0])
                 console.log(res.data)
+
             } catch (err) {
                 console.error("Failed to fetch month list", err)
             }
@@ -62,6 +71,12 @@ const Page = () => {
 
         fetchMonths()
     }, [userId])
+
+   
+
+    const addAccountActivity = async ( ) => {
+
+    }
 
     return (
         <div className='h-screen overflow-hidden flex flex-col bg-gray-50'>
@@ -93,7 +108,7 @@ const Page = () => {
                             <div className='space-y-3'>
                                 {monthList.map((m, i) => (
                                     <div key={i} className="cursor-pointer hover:underline font-medium">
-                                        {m}
+                                        <button onClick={()=> setTargetedMonth(m)} className=' text-teal-800 cursor-pointer underline'>{m}</button>
                                     </div>
                                 ))}
 
@@ -107,7 +122,7 @@ const Page = () => {
                     {selectedPanel === Panels.WORKSPACE && (
                         <div className='flex gap-6 h-full'>
                             <EarningSection />
-                            <ExpenseSection />
+                            <ExpenseSection monthId={targetedMonth} accountId={accountId} userId={userId}/>
                         </div>
                     )}
 

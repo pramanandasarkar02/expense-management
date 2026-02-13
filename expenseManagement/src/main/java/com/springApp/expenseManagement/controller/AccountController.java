@@ -34,9 +34,9 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getActiveMonthList(userId));
     }
 
-    @GetMapping("/activities/{userId}/months/                                                                                                                                                                              {monthId}")
-    public ResponseEntity<List<AccountActivity>> getMonthlyAccountActivity(@PathVariable String monthId, @PathVariable String userId){
-        return ResponseEntity.ok(accountService.getMonthlyAccountActivity(monthId, userId));
+    @GetMapping("/activities/{accountId}/months/{monthId}")
+    public ResponseEntity<List<AccountActivity>> getMonthlyAccountActivity(@PathVariable String accountId, @PathVariable String monthId){
+        return ResponseEntity.ok(accountService.getMonthlyAccountActivity(monthId, accountId));
     }
 
     @PostMapping("/activities")

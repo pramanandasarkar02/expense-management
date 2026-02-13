@@ -52,8 +52,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountActivity> getMonthlyAccountActivity(String monthId, String userId) {
-        return accountActivityRepository.getMonthlyActivity(monthId, userId);
+    public List<AccountActivity> getMonthlyAccountActivity(String monthId, String accountId) {
+        System.out.println("calling account activity");
+        List<AccountActivity> activities = accountActivityRepository.getMonthlyActivity(monthId, accountId);
+        for(var activity : activities){
+            System.out.println(activity.toString());
+        }
+        System.out.println("length of account activity: "+ activities.size());
+
+        return activities;
     }
 
     @Override

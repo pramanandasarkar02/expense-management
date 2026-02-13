@@ -26,12 +26,8 @@ public interface AccountActivityRepository extends JpaRepository<AccountActivity
         SELECT a
         FROM AccountActivity a
         WHERE a.monthId = ?1
-          AND a.accountId IN (
-              SELECT ac.id
-              FROM Account ac
-              WHERE ac.userId = ?2
-          )
+          AND a.accountId = ?2
     """)
-    List<AccountActivity>getMonthlyActivity(String monthId, String userId);
+    List<AccountActivity>getMonthlyActivity(String monthId, String accountId);
 
 }
