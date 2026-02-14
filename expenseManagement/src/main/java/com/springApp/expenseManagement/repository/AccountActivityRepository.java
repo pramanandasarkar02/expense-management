@@ -1,8 +1,10 @@
 package com.springApp.expenseManagement.repository;
 
 import com.springApp.expenseManagement.entity.AccountActivity;
+import com.springApp.expenseManagement.entity.AccountReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,5 +31,26 @@ public interface AccountActivityRepository extends JpaRepository<AccountActivity
           AND a.accountId = ?2
     """)
     List<AccountActivity>getMonthlyActivity(String monthId, String accountId);
+
+
+    @Query(
+            value = """
+        SELECT 
+            month_id AS monthId,
+            JSON_OBJECTAGG(expense_tag, amount_sum) AS fields
+        FROM (
+            SELECT 
+                month_id,
+                expense_tag,
+                SUM(amount) AS amount_sum
+            FROM account_activity
+            WHERE account_id = :accountId
+            GROUP BY month_id, expense_tag
+        ) AS sub
+        GROUP BY month_id
+        """,
+            nativeQuery = true
+    )
+    List<AccountReport> getReport(@Param("accountId") String accountId);
 
 }

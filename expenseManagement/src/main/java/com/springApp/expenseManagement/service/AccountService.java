@@ -2,6 +2,8 @@ package com.springApp.expenseManagement.service;
 
 import com.springApp.expenseManagement.entity.Account;
 import com.springApp.expenseManagement.entity.AccountActivity;
+import com.springApp.expenseManagement.entity.AccountReport;
+import com.springApp.expenseManagement.entity.AccountReportDTO;
 
 import java.util.List;
 
@@ -13,4 +15,6 @@ public interface AccountService {
 
     Account createAccount(String userId);
     Account getAccount(String userId);
+
+    List<AccountReportDTO> getReports(String accountId);
 }

@@ -130,6 +130,7 @@ const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
   const addActivity = async () => {
     if (!expenseText || !amount || !accountId) return
 
+    console.log(tag)
     const payload = {
       accountId,
       title: expenseText,
@@ -174,7 +175,7 @@ const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
                 <h2 className="text-sm font-semibold text-gray-700">
                   {formatDateHeader(date)}
                 </h2>
-                <span className="text-sm font-bold text-red-600">
+                <span className="text-sm font-bold ">
                   ${group.total}
                 </span>
               </div>
@@ -183,19 +184,19 @@ const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
               {group.items.map((a) => (
                 <div
                   key={a.id}
-                  className="max-w-[85%] bg-blue-50 border border-blue-100 rounded-2xl p-4"
+                  className="max-w-[85%] border rounded-2xl p-2"
                 >
                   <div className="flex justify-between items-center">
                     <p className="font-medium text-gray-800">
                       {a.title}
                     </p>
-                    <span className="font-bold text-red-600">
+                    <span className="font-bold ">
                       ${a.amount}
                     </span>
                   </div>
 
                   <div className="flex justify-between items-center mt-2 text-xs">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                    <span className="px-2 py-1 text-blue-700 rounded-full">
                       {a.expenseTag}
                     </span>
                     <span className="text-gray-400">

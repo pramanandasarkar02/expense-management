@@ -4,6 +4,8 @@ package com.springApp.expenseManagement.controller;
 import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import com.springApp.expenseManagement.entity.Account;
 import com.springApp.expenseManagement.entity.AccountActivity;
+import com.springApp.expenseManagement.entity.AccountReport;
+import com.springApp.expenseManagement.entity.AccountReportDTO;
 import com.springApp.expenseManagement.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +49,10 @@ public class AccountController {
     @PutMapping("/activities")
     public ResponseEntity<AccountActivity> modifyAccountActivity(@RequestBody AccountActivity accountActivity){
         return ResponseEntity.ok(accountService.modifyAccountActivity(accountActivity));
+    }
+
+    @GetMapping("/{accountId}/reports")
+    public ResponseEntity<List<AccountReportDTO>> getAccountReport(@PathVariable String accountId){
+        return ResponseEntity.ok(accountService.getReports(accountId));
     }
 }

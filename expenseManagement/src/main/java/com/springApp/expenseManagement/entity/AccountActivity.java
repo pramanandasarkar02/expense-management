@@ -24,7 +24,7 @@ public class AccountActivity {
 
     private Double amount;
 
-    private ExpenseTag expenseTag;
+    private String expenseTag;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

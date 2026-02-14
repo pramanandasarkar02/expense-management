@@ -1,20 +1,22 @@
 package com.springApp.expenseManagement.service.impl;
 
-import com.springApp.expenseManagement.entity.Account;
-import com.springApp.expenseManagement.entity.AccountActivity;
-import com.springApp.expenseManagement.entity.User;
+import com.springApp.expenseManagement.entity.*;
 import com.springApp.expenseManagement.repository.AccountActivityRepository;
 import com.springApp.expenseManagement.repository.AccountRepository;
 import com.springApp.expenseManagement.repository.UserRepository;
 import com.springApp.expenseManagement.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -23,6 +25,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountActivityRepository accountActivityRepository;
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
+    private final ObjectMapper objectMapper;
+
     @Override
     public List<String> getActiveMonthList(String userId) {
         System.out.println("UserId "+ userId);
@@ -83,5 +87,25 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccount(String userId) {
         return accountRepository.getAccountByUserId(userId);
+    }
+
+    public List<AccountReportDTO> getReports(String accountId) {
+        List<AccountReport> reports = accountActivityRepository.getReport(accountId);
+
+
+        System.out.println(reports);
+        return reports.stream().map(r -> {
+            Map<String, Integer> map;
+            try {
+                map = objectMapper.readValue(
+                        r.getFields(),
+                        new TypeReference<Map<String, Integer>>() {}
+                );
+            } catch (Exception e) {
+                map = Map.of();
+            }
+
+            return new AccountReportDTO(r.getMonthId(), map);
+        }).toList();
     }
 }

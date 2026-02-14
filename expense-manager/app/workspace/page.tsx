@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
-import EarningSection from './components/EarningSection'
+import { useEffect, useState } from 'react'
+
 import ExpenseSection from './components/ExpenseSection'
 import { CalendarDays, ClipboardMinus, UserPen } from 'lucide-react'
 import axios from 'axios'
+import Report from './components/Report'
 
 enum Panels {
     WORKSPACE,
@@ -24,6 +25,7 @@ const Page = () => {
     const [userName, setUserName] = useState("")
     const [monthList, setMonthList] = useState([])
     const [targetedMonth, setTargetedMonth] = useState("")
+    const [totalExpense, setTotalexpense] = useState(100)
 
 
     const rootURL = "http://localhost:8080/api"
@@ -84,7 +86,7 @@ const Page = () => {
             <header className='bg-teal-800 text-white p-2 shrink-0'>
                 <div className='flex justify-between items-center px-10'>
                     <h1 className='text-2xl font-bold'>{userName}</h1>
-                    <p className='text-3xl font-bold'>40000</p>
+                    <p className='text-3xl font-bold'>{totalExpense}</p>
                 </div>
             </header>
 
@@ -120,21 +122,21 @@ const Page = () => {
                 {/* Main */}
                 <div className='flex-1 p-6 overflow-hidden'>
                     {selectedPanel === Panels.WORKSPACE && (
-                        <div className='flex gap-6 h-full'>
-                            <EarningSection />
+                        <div className='h-full'>
+                            {/* <EarningSection /> */}
                             <ExpenseSection monthId={targetedMonth} accountId={accountId} userId={userId}/>
                         </div>
                     )}
 
                     {selectedPanel === Panels.EVENT && (
                         <div className='h-full flex items-center justify-center text-2xl font-bold'>
-                            Events Calendar
+                            Events
                         </div>
                     )}
 
                     {selectedPanel === Panels.REPORT && (
-                        <div className='bg-white h-full rounded-xl p-6 border shadow-sm'>
-                            <h2 className='text-2xl font-bold'>Report</h2>
+                        <div className='bg-white h-full '>
+                            <Report />
                         </div>
                     )}
                 </div>
