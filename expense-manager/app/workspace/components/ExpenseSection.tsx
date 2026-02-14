@@ -1,154 +1,137 @@
-"use client"
+'use client';
 
-import axios from "axios"
-import React, { useEffect, useRef, useState } from "react"
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 
 const expenseTagList = [
-  { key: "CORE_LIVING", label: "Core Living" },
-  { key: "FOOD", label: "Food" },
-  { key: "TRANSPORT", label: "Transport" },
-  { key: "FAMILY", label: "Family" },
-  { key: "ENTERTAINMENT", label: "Entertainment" },
-  { key: "FINANCIAL", label: "Financial" },
-]
+  { key: 'CORE_LIVING', label: 'Core Living' },
+  { key: 'FOOD', label: 'Food' },
+  { key: 'TRANSPORT', label: 'Transport' },
+  { key: 'FAMILY', label: 'Family' },
+  { key: 'ENTERTAINMENT', label: 'Entertainment' },
+  { key: 'FINANCIAL', label: 'Financial' },
+];
 
 type Props = {
-  monthId: string
-  accountId: string | null
-  userId: string | null
-}
+  monthId: string;
+  accountId: string | null;
+  userId: string | null;
+};
 
 type Activity = {
-  id: string
-  title: string
-  amount: number
-  expenseTag: string
-  createdAt: string
-  updatedAt: string
-}
+  id: string;
+  title: string;
+  amount: number;
+  expenseTag: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
-  const [expenseText, setExpenseText] = useState("")
-  const [tag, setTag] = useState(expenseTagList[0].key)
-  const [amount, setAmount] = useState<number | "">("")
-  const [activities, setActivities] = useState<Activity[]>([])
+  const [expenseText, setExpenseText] = useState('');
+  const [tag, setTag] = useState(expenseTagList[0].key);
+  const [amount, setAmount] = useState<number | ''>('');
+  const [activities, setActivities] = useState<Activity[]>([]);
 
-  const bottomRef = useRef<HTMLDivElement | null>(null)
-  const rootURL = "http://localhost:8080/api"
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const rootURL = 'http://localhost:8080/api';
 
   /* ---------- Helpers ---------- */
 
   const sortByTimeAsc = (data: Activity[]) =>
-    [...data].sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() -
-        new Date(b.createdAt).getTime()
-    )
+    [...data].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
   const formatTime = (dateStr: string) => {
-    const d = new Date(dateStr)
-    return d.toLocaleString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
+    const d = new Date(dateStr);
+    return d.toLocaleString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
       hour12: true,
-    })
-  }
+    });
+  };
 
   const formatDateHeader = (dateStr: string) => {
-    const d = new Date(dateStr)
-    return d.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "2-digit",
-    })
-  }
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: '2-digit',
+    });
+  };
 
   const groupByDate = (data: Activity[]) => {
-    const map: Record<
-      string,
-      { items: Activity[]; total: number }
-    > = {}
+    const map: Record<string, { items: Activity[]; total: number }> = {};
 
     data.forEach((a) => {
-      const dateKey = new Date(a.createdAt)
-        .toISOString()
-        .split("T")[0]
+      const dateKey = new Date(a.createdAt).toISOString().split('T')[0];
 
       if (!map[dateKey]) {
-        map[dateKey] = { items: [], total: 0 }
+        map[dateKey] = { items: [], total: 0 };
       }
 
-      map[dateKey].items.push(a)
-      map[dateKey].total += a.amount
-    })
+      map[dateKey].items.push(a);
+      map[dateKey].total += a.amount;
+    });
 
     return Object.entries(map).sort(
-      ([d1], [d2]) =>
-        new Date(d1).getTime() -
-        new Date(d2).getTime()
-    )
-  }
+      ([d1], [d2]) => new Date(d1).getTime() - new Date(d2).getTime()
+    );
+  };
 
   /* ---------- Fetch ---------- */
 
-  const fetchActivitiesWithRetry = async (
-    retries = 5,
-    delay = 1500
-  ) => {
-    if (!monthId || !accountId) return
+  const fetchActivitiesWithRetry = async (retries = 5, delay = 1500) => {
+    if (!monthId || !accountId) return;
 
     try {
       const res = await axios.get<Activity[]>(
         `${rootURL}/accounts/activities/${accountId}/months/${monthId}`
-      )
+      );
 
       if (res.data.length === 0 && retries > 0) {
-        setTimeout(
-          () => fetchActivitiesWithRetry(retries - 1, delay),
-          delay
-        )
+        setTimeout(() => fetchActivitiesWithRetry(retries - 1, delay), delay);
       } else {
-        setActivities(sortByTimeAsc(res.data))
+        setActivities(sortByTimeAsc(res.data));
       }
     } catch (err) {
-      console.error("Failed to fetch activities", err)
+      console.error('Failed to fetch activities', err);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchActivitiesWithRetry()
-  }, [monthId, userId])
+    fetchActivitiesWithRetry();
+  }, [monthId, userId]);
 
   /* ---------- Auto scroll ---------- */
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [activities])
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [activities]);
 
   /* ---------- Add ---------- */
 
   const addActivity = async () => {
-    if (!expenseText || !amount || !accountId) return
+    if (!expenseText || !amount || !accountId) return;
 
-    console.log(tag)
+    console.log(tag);
     const payload = {
       accountId,
       title: expenseText,
-      transactionType: "EXPENSE",
+      transactionType: 'EXPENSE',
       monthId,
       expenseTag: tag,
       amount: Number(amount),
-    }
+    };
 
     try {
-      await axios.post(`${rootURL}/accounts/activities`, payload)
-      setExpenseText("")
-      setAmount("")
-      setTimeout(fetchActivitiesWithRetry, 600)
+      await axios.post(`${rootURL}/accounts/activities`, payload);
+      setExpenseText('');
+      setAmount('');
+      setTimeout(fetchActivitiesWithRetry, 600);
     } catch (err) {
-      console.error("Failed to add activity", err)
+      console.error('Failed to add activity', err);
     }
-  }
+  };
 
   /* ---------- UI ---------- */
 
@@ -156,52 +139,33 @@ const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
     <div className="w-full h-full flex flex-col bg-white rounded-xl border shadow-sm">
       {/* Header */}
       <div className="p-4 border-b bg-gray-50">
-        <h1 className="text-xl font-semibold text-center">
-          Expenses
-        </h1>
+        <h1 className="text-xl font-semibold text-center">Expenses</h1>
       </div>
 
       {/* List */}
       <div className="flex-1 overflow-auto p-4 space-y-6">
         {activities.length === 0 ? (
-          <p className="text-gray-400 text-center">
-            No expenses yet
-          </p>
+          <p className="text-gray-400 text-center">No expenses yet</p>
         ) : (
           groupByDate(activities).map(([date, group]) => (
             <div key={date} className="space-y-3">
               {/* Date Row */}
               <div className="flex justify-between items-center">
-                <h2 className="text-sm font-semibold text-gray-700">
-                  {formatDateHeader(date)}
-                </h2>
-                <span className="text-sm font-bold ">
-                  ${group.total}
-                </span>
+                <h2 className="text-sm font-semibold text-gray-700">{formatDateHeader(date)}</h2>
+                <span className="text-sm font-bold ">${group.total}</span>
               </div>
 
               {/* Expenses */}
               {group.items.map((a) => (
-                <div
-                  key={a.id}
-                  className="max-w-[85%] border rounded-2xl p-2"
-                >
+                <div key={a.id} className="w-full border rounded-2xl p-2">
                   <div className="flex justify-between items-center">
-                    <p className="font-medium text-gray-800">
-                      {a.title}
-                    </p>
-                    <span className="font-bold ">
-                      ${a.amount}
-                    </span>
+                    <p className="font-medium text-gray-800">{a.title}</p>
+                    <span className="font-bold ">${a.amount}</span>
                   </div>
 
                   <div className="flex justify-between items-center mt-2 text-xs">
-                    <span className="px-2 py-1 text-blue-700 rounded-full">
-                      {a.expenseTag}
-                    </span>
-                    <span className="text-gray-400">
-                      {formatTime(a.createdAt)}
-                    </span>
+                    <span className="px-2 py-1 text-teal-700 rounded-full">{a.expenseTag}</span>
+                    <span className="text-gray-400">{formatTime(a.createdAt)}</span>
                   </div>
                 </div>
               ))}
@@ -224,11 +188,7 @@ const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
           <input
             type="number"
             value={amount}
-            onChange={(e) =>
-              setAmount(
-                e.target.value === "" ? "" : Number(e.target.value)
-              )
-            }
+            onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
             placeholder="Amount"
             className="w-28 px-3 py-3 border rounded-lg"
           />
@@ -254,7 +214,7 @@ const ExpenseSection = ({ monthId, accountId, userId }: Props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ExpenseSection
+export default ExpenseSection;

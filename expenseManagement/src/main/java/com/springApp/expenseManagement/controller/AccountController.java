@@ -55,4 +55,9 @@ public class AccountController {
     public ResponseEntity<List<AccountReportDTO>> getAccountReport(@PathVariable String accountId){
         return ResponseEntity.ok(accountService.getReports(accountId));
     }
+
+    @GetMapping("/{accountId}/total-amount")
+    public ResponseEntity<Double> getTotalAmount(@PathVariable String amountId){
+        return ResponseEntity.ok(accountService.getTotalAmount(amountId));
+    }
 }

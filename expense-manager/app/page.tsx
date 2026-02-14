@@ -1,51 +1,42 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import Link from "next/link";
-import { useState } from "react";
-import { useAuth } from "./AppContext";
-
+import axios from 'axios';
+import Link from 'next/link';
+import { useState } from 'react';
 export default function Home() {
-  const accountURL = "http://localhost:8080/api";
+  const accountURL = 'http://localhost:8080/api';
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   // const { userId, setUserId, setAccountId } = useAuth()
 
   const createUser = async () => {
     const payload = { name };
     const response = await axios.post(`${accountURL}/users`, payload);
     const data = await response.data;
-    
+
     // setUserId(data.id)
     console.log(response.data);
-    localStorage.setItem("userId", data.id)
+    localStorage.setItem('userId', data.id);
   };
 
   const createAccount = async () => {
-    const userId = localStorage.getItem("userId")
-    const payload = { userId }
-    const response = await axios.post(`${accountURL}/accounts`, payload)
+    const userId = localStorage.getItem('userId');
+    const payload = { userId };
+    const response = await axios.post(`${accountURL}/accounts`, payload);
     const data = await response.data;
     // setAccountId(data.accountId)
     console.log(response.data);
-    localStorage.setItem("accountId", data.accountId)
+    localStorage.setItem('accountId', data.accountId);
   };
-
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-
-      <Link
-        href="/workspace"
-        className="mb-6 text-blue-600 hover:underline"
-      >
+      <Link href="/workspace" className="mb-6 text-blue-600 hover:underline">
         Go to Workspace
       </Link>
 
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-6">
-        <h1 className="text-xl font-semibold mb-4 text-center">
-          Create Account
-        </h1>
+        <h1 className="text-xl font-semibold mb-4 text-center">Create Account</h1>
 
         <input
           type="text"
@@ -68,9 +59,7 @@ export default function Home() {
             Claim Account
           </button>
         </div>
-
       </div>
-
     </div>
   );
 }

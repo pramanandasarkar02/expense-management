@@ -108,4 +108,11 @@ public class AccountServiceImpl implements AccountService {
             return new AccountReportDTO(r.getMonthId(), map);
         }).toList();
     }
+
+    @Override
+    public Double getTotalAmount(String amountId) {
+        Double res = accountActivityRepository.getTotalAmount(amountId);
+        System.out.println("Total amount " + res);
+        return res;
+    }
 }

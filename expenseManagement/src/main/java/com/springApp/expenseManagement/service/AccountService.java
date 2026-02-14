@@ -17,4 +17,6 @@ public interface AccountService {
     Account getAccount(String userId);
 
     List<AccountReportDTO> getReports(String accountId);
+
+    Double getTotalAmount(String amountId);
 }

@@ -53,4 +53,15 @@ public interface AccountActivityRepository extends JpaRepository<AccountActivity
     )
     List<AccountReport> getReport(@Param("accountId") String accountId);
 
+
+    @Query(
+            value = """
+        SELECT COALESCE(SUM(amount), 0)
+        FROM account_activity
+        WHERE amount_id = :amountId
+        """,
+            nativeQuery = true
+    )
+    Double getTotalAmount(@Param("amountId") String amountId);
+
 }
