@@ -1,6 +1,5 @@
 package com.springApp.expenseManagement.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,7 +7,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Data
 public class User {
     @Id

@@ -14,17 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping
-    public ResponseEntity<User> createAccount(@RequestBody User user){
+    public ResponseEntity<User> createAccount(@RequestBody User user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserAccount(@PathVariable String userId){
+    public ResponseEntity<User> getUserAccount(@PathVariable String userId) {
         return ResponseEntity.ok(userService.getUser(userId));
     }
-
-
 
 }

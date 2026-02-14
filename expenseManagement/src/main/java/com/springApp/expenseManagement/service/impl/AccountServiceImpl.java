@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -29,12 +28,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<String> getActiveMonthList(String userId) {
-        System.out.println("UserId "+ userId);
+        System.out.println("UserId " + userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
         LocalDateTime createdAt = user.getCreatedAt();
-//        list down every month from the creation date to today
+        // list down every month from the creation date to today
 
         return getMonthsFromCreation(createdAt);
     }
@@ -59,10 +58,10 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountActivity> getMonthlyAccountActivity(String monthId, String accountId) {
         System.out.println("calling account activity");
         List<AccountActivity> activities = accountActivityRepository.getMonthlyActivity(monthId, accountId);
-        for(var activity : activities){
+        for (var activity : activities) {
             System.out.println(activity.toString());
         }
-        System.out.println("length of account activity: "+ activities.size());
+        System.out.println("length of account activity: " + activities.size());
 
         return activities;
     }
@@ -92,15 +91,12 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountReportDTO> getReports(String accountId) {
         List<AccountReport> reports = accountActivityRepository.getReport(accountId);
 
-
         System.out.println(reports);
         return reports.stream().map(r -> {
             Map<String, Integer> map;
             try {
-                map = objectMapper.readValue(
-                        r.getFields(),
-                        new TypeReference<Map<String, Integer>>() {}
-                );
+                map = objectMapper.readValue(r.getFields(), new TypeReference<Map<String, Integer>>() {
+                });
             } catch (Exception e) {
                 map = Map.of();
             }

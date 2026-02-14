@@ -1,6 +1,5 @@
 package com.springApp.expenseManagement.controller;
 
-
 import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import com.springApp.expenseManagement.entity.Account;
 import com.springApp.expenseManagement.entity.AccountActivity;
@@ -21,43 +20,43 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody String userId){
+    public ResponseEntity<Account> createAccount(@RequestBody String userId) {
         return ResponseEntity.ok(accountService.createAccount(userId));
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Account> getAccount(@PathVariable String userId){
+    public ResponseEntity<Account> getAccount(@PathVariable String userId) {
         return ResponseEntity.ok(accountService.getAccount(userId));
     }
 
-
     @GetMapping("/{userId}/months")
-    public ResponseEntity<List<String>> getActivityMonthList(@PathVariable String userId){
+    public ResponseEntity<List<String>> getActivityMonthList(@PathVariable String userId) {
         return ResponseEntity.ok(accountService.getActiveMonthList(userId));
     }
 
     @GetMapping("/activities/{accountId}/months/{monthId}")
-    public ResponseEntity<List<AccountActivity>> getMonthlyAccountActivity(@PathVariable String accountId, @PathVariable String monthId){
+    public ResponseEntity<List<AccountActivity>> getMonthlyAccountActivity(@PathVariable String accountId,
+            @PathVariable String monthId) {
         return ResponseEntity.ok(accountService.getMonthlyAccountActivity(monthId, accountId));
     }
 
     @PostMapping("/activities")
-    public ResponseEntity<AccountActivity> getAccountActivity(@RequestBody AccountActivity accountActivity){
+    public ResponseEntity<AccountActivity> getAccountActivity(@RequestBody AccountActivity accountActivity) {
         return ResponseEntity.ok(accountService.addAccountActivity(accountActivity));
     }
 
     @PutMapping("/activities")
-    public ResponseEntity<AccountActivity> modifyAccountActivity(@RequestBody AccountActivity accountActivity){
+    public ResponseEntity<AccountActivity> modifyAccountActivity(@RequestBody AccountActivity accountActivity) {
         return ResponseEntity.ok(accountService.modifyAccountActivity(accountActivity));
     }
 
     @GetMapping("/{accountId}/reports")
-    public ResponseEntity<List<AccountReportDTO>> getAccountReport(@PathVariable String accountId){
+    public ResponseEntity<List<AccountReportDTO>> getAccountReport(@PathVariable String accountId) {
         return ResponseEntity.ok(accountService.getReports(accountId));
     }
 
     @GetMapping("/{accountId}/total-amount")
-    public ResponseEntity<Double> getTotalAmount(@PathVariable String amountId){
+    public ResponseEntity<Double> getTotalAmount(@PathVariable String amountId) {
         return ResponseEntity.ok(accountService.getTotalAmount(amountId));
     }
 }

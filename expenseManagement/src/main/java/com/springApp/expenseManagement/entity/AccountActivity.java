@@ -1,6 +1,5 @@
 package com.springApp.expenseManagement.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -43,6 +42,5 @@ public class AccountActivity {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-
 
 }
