@@ -36,7 +36,11 @@ This project is ideal for **personal budgeting**, **financial tracking**, or as 
 ---
 
 ## Demo
-![Alt text for image 1](images/image2.png "Title 1") ![Alt text for image 2](images/image1.png "Title 2")
+<div style="display: flex; gap: 10px; align-items: center;">
+  <img src="images/image2.png" alt="Alt text for image 1" title="Title 1" style="width: 50%;">
+  <img src="images/image1.png" alt="Alt text for image 2" title="Title 2" style="width: 50%;">
+</div>
+
 
 
 
